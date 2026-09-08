@@ -9,7 +9,7 @@ HD_RAW = {'NE81_39','HI80_31','NE86_39','SE79_16','SE92_31','SE92_35','SE92_25',
 HD_EXCLUDE = set()  # previously excluded HI80_31/NE80_35/NE81_39 as "not yet flown"; user corrected — they were flown in 2025 after all
 HD = HD_RAW - HD_EXCLUDE
 DONE_2026 = {'RVK','KEF','SW56_15','SW52_23','HI74_27','HI74_23','NE75_35','NE80_43','HI68_19','SW62_19','SW57_23','NW47_40','NW51_44','NW51_40','SW45_27','SW51_27','SW57_27','NW49_31'}
-PARTIAL_2026 = {'SW51_17','SE74_15','NW67_31','NW67_37','NW63_37','HI74_19','NE74_39','SW62_15','NW44_35','SE79_20'}
+PARTIAL_2026 = {'SW51_17','SE74_15','NW67_31','NW67_37','NW63_37','HI74_19','NE74_39','SW62_15','NW44_35','SE79_20','SW55_19'}
 CLOUDS = {'SW51_17','HI74_19'}
 # Ground-truth fractions from actual collected-image counts (more accurate than
 # the flight-line swath-buffer model) — these override the geometric estimate
@@ -23,6 +23,7 @@ IMAGE_COUNT_FRACTIONS = {
     'HI74_19': 0.90,
     'NW44_35': 0.50,
     'SE79_20': 0.75,
+    'SW55_19': 0.20,
 }
 
 # Blocks whose percentage is real (not to be zeroed out) but has NOT yet been
@@ -31,7 +32,7 @@ IMAGE_COUNT_FRACTIONS = {
 # displayed fraction, only the confirmed flag.
 UNCONFIRMED = {
     'SW51_17', 'SW51_27', 'SW57_27', 'SE74_15', 'NW63_37',
-    'NW67_37', 'NE74_39', 'NW51_40', 'NW44_35',
+    'NW67_37', 'NE74_39', 'NW51_40', 'NW44_35', 'SW55_19',
 }
 
 def default_w(gsd): return 650 if gsd == 10 else 2600
