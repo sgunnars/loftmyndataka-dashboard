@@ -8,21 +8,19 @@ res_by_label = {r["label"]: r for r in results}
 HD_RAW = {'NE81_39','HI80_31','NE86_39','SE79_16','SE92_31','SE92_35','SE92_25','NE80_35','NE86_35','NE86_31'}
 HD_EXCLUDE = set()  # previously excluded HI80_31/NE80_35/NE81_39 as "not yet flown"; user corrected — they were flown in 2025 after all
 HD = HD_RAW - HD_EXCLUDE
-DONE_2026 = {'RVK','KEF','SW56_15','SW52_23','HI74_27','HI74_23','SE79_20','NE75_35','NE80_43','HI68_19','SW62_19','SW57_23','NW47_40','NW51_44','NW51_40','SW45_27'}
-PARTIAL_2026 = {'SW51_27','SW57_27','SW51_17','SE74_15','NW67_31','NW67_37','NW63_37','HI74_19','NE74_39','SW62_15','NW44_35'}
+DONE_2026 = {'RVK','KEF','SW56_15','SW52_23','HI74_27','HI74_23','SE79_20','NE75_35','NE80_43','HI68_19','SW62_19','SW57_23','NW47_40','NW51_44','NW51_40','SW45_27','SW51_27','SW57_27'}
+PARTIAL_2026 = {'SW51_17','SE74_15','NW67_31','NW67_37','NW63_37','HI74_19','NE74_39','SW62_15','NW44_35'}
 CLOUDS = {'SW51_17','HI74_19'}
 # Ground-truth fractions from actual collected-image counts (more accurate than
 # the flight-line swath-buffer model) — these override the geometric estimate
 # entirely and are not subject to the pessimistic-multiplier adjustment.
 IMAGE_COUNT_FRACTIONS = {
     'SW51_17': 0.50,
-    'SW57_27': 0.60,
     'NE74_39': 0.197,
     'SE74_15': 0.40,
     'SW62_15': 0.30,
     'NW67_37': 0.75,
     'HI74_19': 0.90,
-    'SW51_27': 0.15,
     'NW44_35': 0.50,
 }
 
