@@ -8,8 +8,8 @@ res_by_label = {r["label"]: r for r in results}
 HD_RAW = {'NE81_39','HI80_31','NE86_39','SE79_16','SE92_31','SE92_35','SE92_25','NE80_35','NE86_35','NE86_31'}
 HD_EXCLUDE = set()  # previously excluded HI80_31/NE80_35/NE81_39 as "not yet flown"; user corrected — they were flown in 2025 after all
 HD = HD_RAW - HD_EXCLUDE
-DONE_2026 = {'RVK','KEF','SW56_15','SW52_23','HI74_27','HI74_23','SE79_20','NE75_35','NE80_43','HI68_19','SW62_19','SW57_23','NW47_40','NW51_44','NW51_40','SW45_27','SW51_27','SW57_27'}
-PARTIAL_2026 = {'SW51_17','SE74_15','NW67_31','NW67_37','NW63_37','HI74_19','NE74_39','SW62_15','NW44_35'}
+DONE_2026 = {'RVK','KEF','SW56_15','SW52_23','HI74_27','HI74_23','NE75_35','NE80_43','HI68_19','SW62_19','SW57_23','NW47_40','NW51_44','NW51_40','SW45_27','SW51_27','SW57_27','NW49_31'}
+PARTIAL_2026 = {'SW51_17','SE74_15','NW67_31','NW67_37','NW63_37','HI74_19','NE74_39','SW62_15','NW44_35','SE79_20'}
 CLOUDS = {'SW51_17','HI74_19'}
 # Ground-truth fractions from actual collected-image counts (more accurate than
 # the flight-line swath-buffer model) — these override the geometric estimate
@@ -19,9 +19,19 @@ IMAGE_COUNT_FRACTIONS = {
     'NE74_39': 0.197,
     'SE74_15': 0.40,
     'SW62_15': 0.30,
-    'NW67_37': 0.75,
+    'NW67_37': 0.50,
     'HI74_19': 0.90,
     'NW44_35': 0.50,
+    'SE79_20': 0.75,
+}
+
+# Blocks whose percentage is real (not to be zeroed out) but has NOT yet been
+# formally confirmed/staðfest by a human reviewer — shows as "(óstaðfest)" in
+# the dashboard instead of "(staðfest)"/plain "Lokið". Does not affect the
+# displayed fraction, only the confirmed flag.
+UNCONFIRMED = {
+    'SW51_17', 'SW51_27', 'SW57_27', 'SE74_15', 'NW63_37',
+    'NW67_37', 'NE74_39', 'NW51_40', 'NW44_35',
 }
 
 def default_w(gsd): return 650 if gsd == 10 else 2600
@@ -44,18 +54,23 @@ def classify(label, lot, gsd, cov):
     # is NOT credited as mapped area unless a human has confirmed the block.
     est_frac = interp(cov, default_w(gsd))
     if lot == 2 and label in HD:
-        return {"status": "done2025", "confirmed": True, "exact": True, "fraction": 1.0, "note": None}
-    if label in DONE_2026:
-        return {"status": "done2026", "confirmed": True, "exact": True, "fraction": 1.0, "note": None}
-    if label in PARTIAL_2026:
+        result = {"status": "done2025", "confirmed": True, "exact": True, "fraction": 1.0, "note": None}
+    elif label in DONE_2026:
+        result = {"status": "done2026", "confirmed": True, "exact": True, "fraction": 1.0, "note": None}
+    elif label in PARTIAL_2026:
         note = "Ljósmyndagæði óviss – ský á hluta þekju" if label in CLOUDS else None
         if label in IMAGE_COUNT_FRACTIONS:
-            return {"status": "partial2026", "confirmed": True, "exact": True,
-                    "fraction": IMAGE_COUNT_FRACTIONS[label], "note": note}
-        return {"status": "partial2026", "confirmed": True, "exact": False,
-                "fraction": round(est_frac, 3), "note": note}
-    # Everything else: not credited, regardless of any detected track bleed-over.
-    return {"status": "not_started", "confirmed": False, "exact": False, "fraction": 0.0, "note": None}
+            result = {"status": "partial2026", "confirmed": True, "exact": True,
+                      "fraction": IMAGE_COUNT_FRACTIONS[label], "note": note}
+        else:
+            result = {"status": "partial2026", "confirmed": True, "exact": False,
+                      "fraction": round(est_frac, 3), "note": note}
+    else:
+        # Everything else: not credited, regardless of any detected track bleed-over.
+        result = {"status": "not_started", "confirmed": False, "exact": False, "fraction": 0.0, "note": None}
+    if label in UNCONFIRMED:
+        result["confirmed"] = False
+    return result
 
 def project_lot(lot_blocks, shared_bbox, vb_w=760.0, pad_frac=0.035):
     geoms = [b["geom"] for b in lot_blocks]
@@ -106,7 +121,7 @@ shared_bbox = (
     max(g.bounds[2] for g in all_geoms), max(g.bounds[3] for g in all_geoms),
 )
 data = {
-    "generated": "2026-09-07",
+    "generated": "2026-09-08",
     "defaultWidths": {"10": 650, "25": 2600},
     "combined": project_lot(blocks, shared_bbox, vb_w=1000.0),
 }

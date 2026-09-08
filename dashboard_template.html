@@ -237,6 +237,7 @@ tbody tr.selected{ background:var(--hexagon-soft); }
 .chip.partial2026{ background:var(--surface-2); color:var(--ink); border:1px solid var(--est-ring); }
 .chip.estimated_partial{ background:var(--surface-2); color:var(--ink-soft); border:1px dashed var(--est-ring); }
 .chip.not_started{ background:var(--surface-2); color:var(--ink-faint); border:1px solid var(--line); }
+.chip.unconfirmed{ border-style:dashed; }
 
 /* ---------- methodology ---------- */
 .method{
@@ -269,7 +270,7 @@ footer .prepared{ font-family:'JetBrains Mono',monospace; font-size:11.5px; colo
       <p class="dek">Sta&eth;a loftmyndat&ouml;ku og hlutfall lands sem loki&eth er, reikna&eth beint &uacute;r flugsl&oacute;&eth 2026 og sta&eth-festri yfirfer&eth verktaka.</p>
     </div>
     <div class="masthead-right">
-      <div class="date" id="metaDate">7. september 2026</div>
+      <div class="date" id="metaDate">8. september 2026</div>
       <div id="metaTotalArea">113.522,5 km&sup2; samtals</div>
     </div>
   </div>
@@ -370,7 +371,7 @@ footer .prepared{ font-family:'JetBrains Mono',monospace; font-size:11.5px; colo
 
   <footer>
     <div class="notes">Heildarframvinda er reiknu&eth sem samtala kortlag&eth s flatarm&aacute;ls beggja &uacute;tbo&eth;shluta, deilt me&eth heildarflatarm&aacute;li landsins sem &aacute; a&eth kortleggja (113.522,5 km&sup2; skv. A4-iceland_ortho_tender_blocks_v20230308).</div>
-    <div class="prepared">Unni&eth af Sydney &middot; 7. sept. 2026</div>
+    <div class="prepared">Unni&eth af Sydney &middot; 8. sept. 2026</div>
   </footer>
 
 </div>
@@ -436,9 +437,14 @@ function statusGroup(status){
   return 'not_started';
 }
 
-function statusLabel(status){
-  return {done2025:'Lokið 2025', done2026:'Lokið 2026', partial2026:'Að hluta (staðfest)',
+function statusLabel(b){
+  const status = b.status;
+  const base = {done2025:'Lokið 2025', done2026:'Lokið 2026', partial2026:'Að hluta',
           estimated_partial:'Áætlað að hluta', not_started:'Óflogið'}[status] || status;
+  if (status === 'done2025' || status === 'done2026' || status === 'partial2026'){
+    return base + (b.confirmed ? ' (sta&eth;fest)' : ' (&oacute;sta&eth;fest)');
+  }
+  return base;
 }
 
 function hexToRgb(hex){
@@ -561,7 +567,7 @@ function updateMapColors(){
 const tooltipEl = document.getElementById('tooltip');
 function showTooltip(e,b){
   const frac = liveFraction(b, mult);
-  let statusText = statusLabel(b.status);
+  let statusText = statusLabel(b);
   const flightLine = (b.status === 'done2025')
     ? `Sta&eth;fest loki&eth 2025 (grunn&thorn;ekja)${b.flownKm2026>0 ? ` &middot; auk &thorn;ess ${b.flownKm2026.toLocaleString('is-IS')} km flogi&eth 2026` : ''}`
     : `Flogi&eth 2026: ${b.flownKm2026.toLocaleString('is-IS')} km sl&oacute;&eth`;
@@ -687,7 +693,7 @@ function renderTable(){
   rows.sort((a,b)=>{
     let av, bv;
     if (sortKey === 'fraction'){ av = liveFraction(a,mult); bv = liveFraction(b,mult); }
-    else if (sortKey === 'status'){ av = statusLabel(a.status); bv = statusLabel(b.status); }
+    else if (sortKey === 'status'){ av = statusLabel(a); bv = statusLabel(b); }
     else { av = a[sortKey]; bv = b[sortKey]; }
     if (typeof av === 'string') return sortDir*av.localeCompare(bv, 'is');
     return sortDir*(av-bv);
@@ -700,7 +706,7 @@ function renderTable(){
       <td class="mono">${fmtKm2(b.area_km2)}</td>
       <td class="mono">${b.gsd} cm</td>
       <td class="mono">${fmtPct(frac)}</td>
-      <td><span class="chip ${b.status}">${statusLabel(b.status)}</span></td>
+      <td><span class="chip ${b.status}${b.confirmed ? '' : ' unconfirmed'}">${statusLabel(b)}</span></td>
     </tr>`;
   }).join('');
   body.querySelectorAll('tr').forEach(tr=> tr.addEventListener('click', ()=> selectBlock(tr.dataset.label)));
