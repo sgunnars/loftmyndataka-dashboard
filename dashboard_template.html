@@ -1,0 +1,729 @@
+<title>Loftmyndataka Framvinda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1B2A2E; --ink-soft:#57696D; --ink-faint:#8A9A9D;
+  --paper:#FBFAF5; --surface:#FFFFFF; --surface-2:#F2EEE0;
+  --line:#DDD6C4; --line-soft:#EAE5D6;
+  --meixner:#2E7D63; --meixner-soft:#E7F1EB; --meixner-line:#BFDBCE;
+  --hexagon:#7C4F8F; --hexagon-soft:#F0E8F2; --hexagon-line:#D6BFDD; --hexagon-deep:#432A50;
+  --not-started:#EAE3CC; --not-started-line:#D9CFAE;
+  --confirmed-ring:#1B2A2E;
+  --est-ring:#B8AE8C;
+  --focus:#3D6E8C;
+  --warn:#8A5A12; --warn-soft:#FBF0DC; --warn-line:#E8CE9B;
+  --grid-line:#FFFFFF;
+  --shadow: 0 1px 2px rgba(27,42,46,.06), 0 4px 14px rgba(27,42,46,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#EDEAE0; --ink-soft:#AEB6B4; --ink-faint:#7C8886;
+    --paper:#14181A; --surface:#1B2124; --surface-2:#20272A;
+    --line:#333B3A; --line-soft:#293130;
+    --meixner:#5FBE9B; --meixner-soft:#1B2E27; --meixner-line:#2E4C40;
+    --hexagon:#C79BD9; --hexagon-soft:#2B2131; --hexagon-line:#4A3752; --hexagon-deep:#8B5DA3;
+    --not-started:#3A4436; --not-started-line:#57644E;
+    --confirmed-ring:#EDEAE0;
+    --est-ring:#5B5744;
+    --focus:#7FB4D6;
+    --warn:#E3B564; --warn-soft:#2E2612; --warn-line:#5A4A26;
+    --grid-line:#EDEAE0;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#EDEAE0; --ink-soft:#AEB6B4; --ink-faint:#7C8886;
+  --paper:#14181A; --surface:#1B2124; --surface-2:#20272A;
+  --line:#333B3A; --line-soft:#293130;
+  --meixner:#5FBE9B; --meixner-soft:#1B2E27; --meixner-line:#2E4C40;
+  --hexagon:#C79BD9; --hexagon-soft:#2B2131; --hexagon-line:#4A3752; --hexagon-deep:#8B5DA3;
+  --not-started:#3A4436; --not-started-line:#57644E;
+  --confirmed-ring:#EDEAE0;
+  --est-ring:#5B5744;
+  --focus:#7FB4D6;
+  --warn:#E3B564; --warn-soft:#2E2612; --warn-line:#5A4A26;
+  --grid-line:#EDEAE0;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:'Source Sans 3', Arial, sans-serif;
+  font-size:15px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{ background:var(--focus); color:var(--paper); }
+a{ color:inherit; }
+.wrap{ max-width:1320px; margin:0 auto; padding:28px 28px 64px; display:flex; flex-direction:column; gap:22px; }
+
+/* ---------- masthead ---------- */
+.masthead{
+  display:flex; justify-content:space-between; align-items:flex-end; gap:24px;
+  border-bottom:1.6px solid var(--ink); padding-bottom:14px; flex-wrap:wrap;
+}
+.eyebrow{
+  font-family:'Manrope',sans-serif; font-weight:700; font-size:11.5px;
+  letter-spacing:.11em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 8px;
+  display:flex; align-items:center; gap:9px;
+}
+.live-pill{
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--surface-2); border:1px solid var(--line); color:var(--ink-soft);
+  border-radius:20px; padding:2px 9px 2px 7px; font-size:10.5px; letter-spacing:.04em;
+  font-family:'Manrope',sans-serif; font-weight:700; text-transform:none;
+}
+.live-dot{ width:6px; height:6px; border-radius:50%; background:var(--meixner); flex:none; animation:pulse 2.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce){ .live-dot{ animation:none; } }
+@keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
+h1{
+  font-family:'Manrope',sans-serif; font-weight:800; font-size:32px; letter-spacing:-.015em;
+  margin:0 0 6px; text-wrap:balance;
+}
+.dek{ margin:0; font-size:14.5px; color:var(--ink-soft); max-width:540px; }
+.masthead-right{
+  text-align:right; font-family:'JetBrains Mono',monospace; font-size:12.5px;
+  color:var(--ink-soft); line-height:1.8; white-space:nowrap;
+}
+.masthead-right .date{ color:var(--ink); font-weight:700; }
+
+/* ---------- KPI hero ---------- */
+.disclaimer{
+  display:flex; align-items:flex-start; gap:10px;
+  background:var(--warn-soft); border:1px solid var(--warn-line); color:var(--warn);
+  border-radius:9px; padding:10px 16px; font-size:12.5px; line-height:1.55;
+}
+.disclaimer svg{ flex:none; margin-top:1px; }
+.disclaimer b{ color:var(--warn); }
+.hero{ display:grid; grid-template-columns:1.15fr 1fr 1fr; gap:14px; }
+.tile{
+  background:var(--surface); border:1px solid var(--line); border-top:2.6px solid var(--line);
+  border-radius:10px; padding:18px 20px; display:flex; flex-direction:column; gap:10px;
+  box-shadow:var(--shadow);
+}
+.tile.total{ background:var(--ink); border-color:var(--ink); color:var(--paper); }
+.tile.meixner{ border-top-color:var(--meixner); }
+.tile.hexagon{ border-top-color:var(--hexagon); }
+.tile-label{
+  font-family:'Manrope',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--ink-soft); display:flex; align-items:center; gap:8px;
+}
+.tile.total .tile-label{ color:var(--paper); opacity:.62; }
+.dot{ width:9px; height:9px; border-radius:50%; display:inline-block; flex:none; }
+.dot.meixner{ background:var(--meixner); }
+.dot.hexagon{ background:var(--hexagon); }
+.tile-figure{
+  font-family:'JetBrains Mono',monospace; font-weight:700; font-size:38px; letter-spacing:-.01em;
+  font-variant-numeric:tabular-nums; display:flex; align-items:baseline; gap:10px;
+}
+.tile-figure .delta{ font-size:14px; font-weight:500; color:var(--meixner); }
+.tile.total .tile-figure .delta{ color:var(--paper); opacity:.8; }
+.tile-bar{ height:9px; border-radius:5px; background:var(--surface-2); border:1px solid var(--line); overflow:hidden; display:flex; }
+.tile.total .tile-bar{ background:color-mix(in srgb, var(--paper) 16%, transparent); border-color:color-mix(in srgb, var(--paper) 22%, transparent); }
+.tile-bar-confirmed{ height:100%; background:var(--ink); }
+.tile.meixner .tile-bar-confirmed{ background:var(--meixner); }
+.tile.hexagon .tile-bar-confirmed{ background:var(--hexagon); }
+.tile.total .tile-bar-confirmed{ background:var(--paper); }
+.tile-bar-estimate{ height:100%; opacity:.45; background:var(--ink); }
+.tile.meixner .tile-bar-estimate{ background:var(--meixner); }
+.tile.hexagon .tile-bar-estimate{ background:var(--hexagon); }
+.tile.total .tile-bar-estimate{ background:var(--paper); }
+.tile-sub{ font-size:12.5px; color:var(--ink-soft); line-height:1.55; }
+.tile.total .tile-sub{ color:var(--paper); opacity:.62; }
+.tile-sub b{ color:var(--ink); font-weight:700; font-family:'JetBrains Mono',monospace; }
+.tile.total .tile-sub b{ color:var(--paper); }
+
+/* ---------- control panel ---------- */
+.panel{
+  background:var(--surface); border:1px solid var(--line); border-radius:10px;
+  padding:16px 20px; display:flex; align-items:center; gap:22px; flex-wrap:wrap;
+  box-shadow:var(--shadow);
+}
+.panel-label{
+  font-family:'Manrope',sans-serif; font-weight:700; font-size:12px; letter-spacing:.03em;
+  color:var(--ink); display:flex; flex-direction:column; gap:2px; min-width:200px;
+}
+.panel-label span.sub{ font-family:'Source Sans 3',sans-serif; font-weight:400; font-size:11.5px; color:var(--ink-faint); }
+.slider-row{ display:flex; align-items:center; gap:12px; flex:1; min-width:260px; }
+input[type=range]{
+  flex:1; accent-color:var(--focus); height:4px; cursor:pointer;
+}
+.slider-val{
+  font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13.5px;
+  min-width:52px; text-align:right; font-variant-numeric:tabular-nums;
+}
+.reset-btn{
+  font-family:'Manrope',sans-serif; font-weight:700; font-size:12px; letter-spacing:.02em;
+  color:var(--ink-soft); background:var(--surface-2); border:1px solid var(--line);
+  border-radius:7px; padding:7px 13px; cursor:pointer;
+}
+.reset-btn:hover{ color:var(--ink); border-color:var(--ink-faint); }
+.reset-btn:focus-visible, .reset-btn:focus{ outline:2px solid var(--focus); outline-offset:2px; }
+
+/* ---------- maps ---------- */
+section{ display:flex; flex-direction:column; gap:10px; }
+.section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; border-bottom:1px solid var(--line); padding-bottom:8px; }
+.section-head h2{ font-family:'Manrope',sans-serif; font-weight:700; font-size:17px; margin:0; }
+.section-note{ font-size:12px; color:var(--ink-faint); font-style:italic; }
+
+figure.map-card{
+  margin:0; background:var(--surface); border:1px solid var(--line);
+  border-top:2.6px solid transparent;
+  border-image:linear-gradient(90deg, var(--meixner), var(--hexagon)) 1;
+  border-radius:10px; padding:14px 16px 16px; display:flex; flex-direction:column; gap:10px;
+  box-shadow:var(--shadow); position:relative;
+}
+.map-title{ font-family:'Manrope',sans-serif; font-weight:700; font-size:14.5px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.map-title-pct{ font-family:'JetBrains Mono',monospace; font-weight:700; font-variant-numeric:tabular-nums; }
+.map-svg-wrap{ background:var(--surface-2); border:1px solid var(--line-soft); border-radius:6px; overflow:hidden; max-width:760px; margin:0 auto; width:100%; }
+.map-svg-wrap svg{ display:block; width:100%; height:auto; }
+.block-poly{ stroke:var(--grid-line); stroke-width:3.6; cursor:pointer; transition:filter .12s ease, stroke-width .12s ease; paint-order:stroke; }
+.block-poly:hover, .block-poly.hovered{ filter:brightness(1.08); stroke:var(--ink); stroke-width:4.2; }
+.block-poly.selected{ stroke:var(--focus); stroke-width:4.8; }
+.legend-inline{ display:flex; gap:14px; flex-wrap:wrap; font-size:11.5px; color:var(--ink-faint); }
+.legend-inline span{ display:inline-flex; align-items:center; gap:6px; }
+.swatch{ width:12px; height:12px; border-radius:3px; display:inline-block; flex:none; border:1px solid var(--line); }
+
+/* tooltip */
+.tooltip{
+  position:fixed; pointer-events:none; z-index:40; background:var(--ink); color:var(--paper);
+  border-radius:8px; padding:9px 12px; font-size:12.5px; line-height:1.5; max-width:240px;
+  box-shadow:0 8px 24px rgba(0,0,0,.28); opacity:0; transform:translateY(4px); transition:opacity .1s ease, transform .1s ease;
+}
+.tooltip.show{ opacity:1; transform:translateY(0); }
+.tooltip.pinned{ pointer-events:auto; }
+.tooltip b{ font-family:'Manrope',sans-serif; }
+.tooltip .tt-status{ font-family:'JetBrains Mono',monospace; font-size:11px; opacity:.85; }
+.tooltip .tt-note{ margin-top:4px; font-style:italic; opacity:.85; }
+.tooltip .tt-link{
+  display:inline-block; margin-top:6px; color:#8fd4ff; font-family:'JetBrains Mono',monospace; font-size:11px;
+  text-decoration:underline; cursor:pointer;
+}
+.tooltip .tt-link:hover{ color:#b8e6ff; }
+.tooltip .tt-hint{ margin-top:5px; font-family:'JetBrains Mono',monospace; font-size:10.5px; opacity:.7; font-style:italic; }
+
+/* ---------- table ---------- */
+.table-controls{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.table-controls input[type=search]{
+  font-family:'Source Sans 3',sans-serif; font-size:13px; padding:8px 12px; border-radius:7px;
+  border:1px solid var(--line); background:var(--surface); color:var(--ink); min-width:190px;
+}
+.table-controls select{
+  font-family:'Source Sans 3',sans-serif; font-size:13px; padding:8px 10px; border-radius:7px;
+  border:1px solid var(--line); background:var(--surface); color:var(--ink);
+}
+.table-controls input:focus-visible, .table-controls select:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+.table-scroll{ overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--surface); box-shadow:var(--shadow); }
+table{ border-collapse:collapse; width:100%; font-size:13px; min-width:820px; }
+thead th{
+  text-align:left; font-family:'Manrope',sans-serif; font-weight:700; font-size:11px; letter-spacing:.04em;
+  text-transform:uppercase; color:var(--ink-soft); padding:10px 14px; border-bottom:1px solid var(--line);
+  background:var(--surface-2); position:sticky; top:0; cursor:pointer; white-space:nowrap;
+}
+thead th:hover{ color:var(--ink); }
+tbody td{ padding:9px 14px; border-bottom:1px solid var(--line-soft); font-variant-numeric:tabular-nums; }
+tbody tr{ cursor:pointer; }
+tbody tr:hover{ background:var(--surface-2); }
+tbody tr.selected{ background:var(--hexagon-soft); }
+.mono{ font-family:'JetBrains Mono',monospace; }
+.chip{
+  display:inline-flex; align-items:center; gap:5px; padding:2px 9px; border-radius:20px;
+  font-size:11px; font-weight:600; font-family:'Manrope',sans-serif; white-space:nowrap;
+}
+.chip.done2025{ background:var(--hexagon-soft); color:var(--hexagon-deep); border:1px solid var(--hexagon-deep); font-weight:700; }
+.chip.done2026{ background:var(--meixner-soft); color:var(--meixner); border:1px solid var(--meixner-line); }
+.chip.partial2026{ background:var(--surface-2); color:var(--ink); border:1px solid var(--est-ring); }
+.chip.estimated_partial{ background:var(--surface-2); color:var(--ink-soft); border:1px dashed var(--est-ring); }
+.chip.not_started{ background:var(--surface-2); color:var(--ink-faint); border:1px solid var(--line); }
+
+/* ---------- methodology ---------- */
+.method{
+  background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:16px 20px;
+  font-size:12.5px; color:var(--ink-soft); line-height:1.65; display:flex; flex-direction:column; gap:8px;
+}
+.method h3{ margin:0; font-family:'Manrope',sans-serif; font-size:12.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink); }
+
+footer{
+  margin-top:8px; padding-top:14px; border-top:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap;
+}
+footer .notes{ font-size:11.5px; color:var(--ink-faint); max-width:560px; line-height:1.6; }
+footer .prepared{ font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-soft); text-align:right; white-space:nowrap; }
+
+@media (max-width:880px){
+  .hero{ grid-template-columns:1fr; }
+  .maps-grid{ grid-template-columns:1fr; }
+}
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <div>
+      <p class="eyebrow">Framvinduyfirlit &middot; N&aacute;tt&uacute;rufr&aelig;&ethstofnun
+        <span class="live-pill"><span class="live-dot"></span>Lifandi m&aelig;labor&eth</span>
+      </p>
+      <h1>Loftmyndataka &Iacute;slands 2025&ndash;2028</h1>
+      <p class="dek">Sta&eth;a loftmyndat&ouml;ku og hlutfall lands sem loki&eth er, reikna&eth beint &uacute;r flugsl&oacute;&eth 2026 og sta&eth-festri yfirfer&eth verktaka.</p>
+    </div>
+    <div class="masthead-right">
+      <div class="date" id="metaDate">7. september 2026</div>
+      <div id="metaTotalArea">113.522,5 km&sup2; samtals</div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.3 15 13.7H1L8 1.3Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6.2v3.6M8 11.7v.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <div><b>Athugi&eth;:</b> allar t&ouml;lur og k&ouml;rt h&eacute;r eru &aacute;&aelig;tlanir bygg&eth;ar &aacute; fyrirliggjandi g&ouml;gnum og handvirkri sta&eth;festingu &aacute; tilteknum d&ouml;gum. &THORN;etta er <b>EKKI loka&eth; ni&eth;ursta&eth;a</b> fyrir kortlagt flatarm&aacute;l &aacute;rsins 2026 &mdash; loka&thorn;ekja &aacute;rsins r&aelig;&eth;st ekki fyrr en flugt&iacute;mabili l&yacute;kur og endanleg myndg&aelig;&eth;ayfirfer&eth; hefur fari&eth; fram.</div>
+  </div>
+
+  <div class="hero">
+    <div class="tile total">
+      <div class="tile-label">Heildarframvinda verkefnis</div>
+      <div class="tile-figure"><span id="totalPct">&mdash;</span><span class="delta" id="totalDelta"></span></div>
+      <div class="tile-bar"><div class="tile-bar-confirmed" id="totalBarConfirmed"></div><div class="tile-bar-estimate" id="totalBarEstimate"></div></div>
+      <div class="tile-sub" id="totalSub">&nbsp;</div>
+    </div>
+    <div class="tile meixner">
+      <div class="tile-label"><span class="dot meixner"></span>Meixner &mdash; &uacute;tbo&eth;shluti 1</div>
+      <div class="tile-figure"><span id="meixnerPct">&mdash;</span></div>
+      <div class="tile-bar"><div class="tile-bar-confirmed" id="meixnerBarConfirmed"></div><div class="tile-bar-estimate" id="meixnerBarEstimate"></div></div>
+      <div class="tile-sub" id="meixnerSub">&nbsp;</div>
+    </div>
+    <div class="tile hexagon">
+      <div class="tile-label"><span class="dot hexagon"></span>Hexagon &mdash; &uacute;tbo&eth;shluti 2</div>
+      <div class="tile-figure"><span id="hexagonPct">&mdash;</span></div>
+      <div class="tile-bar"><div class="tile-bar-confirmed" id="hexagonBarConfirmed"></div><div class="tile-bar-estimate" id="hexagonBarEstimate"></div></div>
+      <div class="tile-sub" id="hexagonSub">&nbsp;</div>
+    </div>
+  </div>
+
+  <section class="maps">
+    <div class="section-head">
+      <h2>Flugþekja eftir reitum</h2>
+      <span class="section-note">b&aacute;&eth;ir &uacute;tbo&eth;shlutar &aacute; einu korti &middot; smelltu &aacute; reit fyrir n&aacute;nari uppl&yacute;singar</span>
+    </div>
+    <figure class="map-card combined">
+      <div class="map-title">
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span class="dot meixner"></span>Meixner
+          <span class="map-title-pct" id="meixnerMapPct">&mdash;</span>
+          <span style="color:var(--line);">&middot;</span>
+          <span class="dot hexagon"></span>Hexagon
+          <span class="map-title-pct" id="hexagonMapPct">&mdash;</span>
+        </span>
+      </div>
+      <div class="map-svg-wrap" id="combinedMapWrap"></div>
+      <div class="legend-inline">
+        <span><span class="swatch" style="background:var(--meixner);"></span>Meixner loki&eth</span>
+        <span><span class="swatch" style="background:repeating-linear-gradient(45deg,transparent 0 2.4px,var(--meixner) 2.4px 4.8px);"></span>Meixner a&eth hluta</span>
+        <span><span class="swatch" style="background:var(--hexagon-deep);"></span>Hexagon loki&eth 2025</span>
+        <span><span class="swatch" style="background:var(--hexagon);"></span>Hexagon loki&eth 2026</span>
+        <span><span class="swatch" style="background:repeating-linear-gradient(45deg,transparent 0 2.4px,var(--hexagon) 2.4px 4.8px);"></span>Hexagon a&eth hluta</span>
+        <span><span class="swatch" style="background:var(--not-started);"></span>&Oacute;flogi&eth</span>
+      </div>
+    </figure>
+  </section>
+
+  <section class="table-section">
+    <div class="section-head">
+      <h2>Reitir &mdash; allar 60 einingar</h2>
+      <span class="section-note">smelltu &aacute; d&aacute;lkah&ouml;fu&eth til a&eth ra&eth a</span>
+    </div>
+    <div class="table-controls">
+      <input type="search" id="searchBox" placeholder="Leita a&eth reit (t.d. SW51_27)&hellip;">
+      <select id="lotFilter">
+        <option value="all">B&aacute;&eth;ir &uacute;tbo&eth;shlutar</option>
+        <option value="1">Meixner (1)</option>
+        <option value="2">Hexagon (2)</option>
+      </select>
+      <select id="statusFilter">
+        <option value="all">Allar st&ouml;&eth;ur</option>
+        <option value="done">Loki&eth</option>
+        <option value="partial">A&eth hluta</option>
+        <option value="not_started">&Oacute;flogi&eth</option>
+      </select>
+    </div>
+    <div class="table-scroll">
+      <table id="blockTable">
+        <thead>
+          <tr>
+            <th data-key="label">Reitur</th>
+            <th data-key="lot">&Uacute;tb.hluti</th>
+            <th data-key="area_km2">Flatarm&aacute;l</th>
+            <th data-key="gsd">GSD</th>
+            <th data-key="fraction">Hlutfall</th>
+            <th data-key="status">Sta&eth;a</th>
+          </tr>
+        </thead>
+        <tbody id="blockTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="method">
+    <h3>A&eth;fer&eth</h3>
+    <div>Loki&eth 2025 (Hexagon, 10 reitir) er sta&eth;fest &uacute;r sk&yacute;rslu verktaka fr&aacute; fyrra &aacute;ri &mdash; s&yacute;nt sem d&ouml;kkfj&oacute;lubl&aacute;tt. Sta&eth;a 21 reits fyrir 2026 (9 loki&eth;r, 12 a&eth hluta &mdash; s&yacute;nt me&eth sk&aacute;strikum) er sta&eth;fest handvirkt, myndg&aelig;&eth;i og sk&yacute;jahula teki&eth me&eth &iacute; reikninginn. Hlutfall &thorn;essara 12 "a&eth hluta" reita er &aacute;ætla&eth me&eth &thorn;v&iacute; a&eth belgja flugsl&oacute;&eth 2026 (22.754 brot &uacute;r flight_tracks_merged_2026.gpkg, au&eth;ga&eth me&eth Reykjanessl&oacute;&eth Meixner fr&aacute; 1. sept.) um sviflengd kv&ouml;r&eth;u&eth fyrir hvorn upplausnarflokk (10 cm &rarr; ~650 m, 25 cm &rarr; ~2.600 m), reiknu&eth &aacute; &iacute;haldssamasta gildi (0,5&times; kv&ouml;r&eth;u&eth sviflengd) svo hlutf&ouml;llin eru frekar van- en of&aacute;&aelig;tlu&eth. Allir a&eth rir 29 reitir eru taldir &oacute;flognir (0%) &iacute; &thorn;essari sk&yacute;rslu, jafnvel &thorn;&oacute;tt stakar flugsl&oacute;&eth;ir liggi inn &iacute; &thorn;&aacute; &mdash; sl&iacute;kt er yfirleitt "bleed-over" fr&aacute; a&eth liggjandi reitum (t.d. beygjur e&eth;a fluglei&eth;ir milli sv&aelig;&eth;a) og telst ekki sem kortlagning fyrr en verktaki sta&eth;festir reitinn.</div>
+  </div>
+
+  <footer>
+    <div class="notes">Heildarframvinda er reiknu&eth sem samtala kortlag&eth s flatarm&aacute;ls beggja &uacute;tbo&eth;shluta, deilt me&eth heildarflatarm&aacute;li landsins sem &aacute; a&eth kortleggja (113.522,5 km&sup2; skv. A4-iceland_ortho_tender_blocks_v20230308).</div>
+    <div class="prepared">Unni&eth af Sydney &middot; 7. sept. 2026</div>
+  </footer>
+
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const DATA = __DATA_JSON__;
+
+function fmtKm2(x){
+  return x.toLocaleString('is-IS', {maximumFractionDigits:1, minimumFractionDigits:1});
+}
+function fmtPct(x){
+  return (x*100).toLocaleString('is-IS', {maximumFractionDigits:1, minimumFractionDigits:1}) + '%';
+}
+
+function defaultWidth(gsd){ return DATA.defaultWidths[String(gsd)]; }
+
+function interpCov(cov, w){
+  if (w <= cov[0][0]) return cov[0][1];
+  if (w >= cov[cov.length-1][0]) return cov[cov.length-1][1];
+  for (let i=0;i<cov.length-1;i++){
+    const [w0,v0] = cov[i], [w1,v1] = cov[i+1];
+    if (w0 <= w && w <= w1){
+      const t = (w-w0)/(w1-w0);
+      return v0 + t*(v1-v0);
+    }
+  }
+  return cov[cov.length-1][1];
+}
+
+function liveFraction(b, mult){
+  // Fully confirmed blocks: fixed, no model uncertainty.
+  if (b.status === 'done2025' || b.status === 'done2026') return b.fraction;
+  // Confirmed-partial blocks: percentage either comes from an exact ground-truth
+  // count (collected-image count — no model, no multiplier) or from the swath
+  // model evaluated at the fixed conservative (pessimistic) width multiplier.
+  if (b.status === 'partial2026'){
+    if (b.exact) return b.fraction;
+    const w = defaultWidth(b.gsd) * mult;
+    return Math.min(1, interpCov(b.cov, w));
+  }
+  // Everything else is unconfirmed "bleed-over" and is never credited.
+  return 0;
+}
+
+// Optimistic upper bound: the raw geometric swath estimate at the standard
+// (non-pessimistic) width, including for blocks that have no human
+// confirmation yet. Used only to draw the light "could be more than this"
+// band on the progress bars — never to credit area anywhere else. Exact
+// (ground-truth image-count) blocks have no model uncertainty, so their
+// potential equals their confirmed fraction — no shaded upside band.
+function potentialFraction(b){
+  if (b.status === 'done2025' || b.status === 'done2026') return b.fraction;
+  if (b.status === 'partial2026' && b.exact) return b.fraction;
+  const w = defaultWidth(b.gsd);
+  return Math.min(1, interpCov(b.cov, w));
+}
+
+function statusGroup(status){
+  if (status === 'done2025' || status === 'done2026') return 'done';
+  if (status === 'partial2026' || status === 'estimated_partial') return 'partial';
+  return 'not_started';
+}
+
+function statusLabel(status){
+  return {done2025:'Lokið 2025', done2026:'Lokið 2026', partial2026:'Að hluta (staðfest)',
+          estimated_partial:'Áætlað að hluta', not_started:'Óflogið'}[status] || status;
+}
+
+function hexToRgb(hex){
+  const v = hex.replace('#','');
+  return [parseInt(v.slice(0,2),16), parseInt(v.slice(2,4),16), parseInt(v.slice(4,6),16)];
+}
+function mix(c1, c2, t){
+  const a = hexToRgb(c1), b = hexToRgb(c2);
+  const r = a.map((x,i)=>Math.round(x+(b[i]-x)*t));
+  return `rgb(${r[0]},${r[1]},${r[2]})`;
+}
+
+const cssVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+function lotColorOf(b){ return b.lot === 1 ? cssVar('--meixner') : cssVar('--hexagon'); }
+
+function blockBaseFill(b, frac){
+  const notStarted = cssVar('--not-started');
+  if (b.status === 'done2025') return cssVar('--hexagon-deep');
+  if (b.status === 'done2026') return lotColorOf(b);
+  if (b.status === 'not_started') return notStarted;
+  // partial2026 / estimated_partial: subtle tint under the hash overlay
+  return mix(notStarted, lotColorOf(b), Math.max(0.1, frac * 0.55));
+}
+
+let selectedLabel = null;
+let pinnedLabel = null; // label of a block whose tooltip is click-pinned open (so its link can be clicked)
+const mult = 0.5; // fixed at the most conservative swath assumption (no slider)
+const HD2025_IMAGERY_URL = 'https://kort.gis.is/mapview/?app=kort&l=is&c=-1696780,9634036&z=2.0&ls=16142,13790&op=16142_1&eg=16165,16144';
+const hashOverlays = {}; // label -> overlay path element
+
+function makeHashPattern(svgNS, defs, id, color){
+  const pattern = document.createElementNS(svgNS,'pattern');
+  pattern.setAttribute('id', id);
+  pattern.setAttribute('width','6'); pattern.setAttribute('height','6');
+  pattern.setAttribute('patternTransform','rotate(45)');
+  pattern.setAttribute('patternUnits','userSpaceOnUse');
+  const pstripe = document.createElementNS(svgNS,'rect');
+  pstripe.setAttribute('x','0'); pstripe.setAttribute('width','2.4'); pstripe.setAttribute('height','6');
+  pstripe.setAttribute('fill', color);
+  pattern.appendChild(pstripe);
+  defs.appendChild(pattern);
+}
+
+function renderMap(containerEl, mapData){
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', mapData.viewBox.join(' '));
+  svg.setAttribute('role','img');
+
+  const defs = document.createElementNS(svgNS,'defs');
+  makeHashPattern(svgNS, defs, 'mx-hash', cssVar('--meixner'));
+  makeHashPattern(svgNS, defs, 'hex-hash', cssVar('--hexagon'));
+  svg.appendChild(defs);
+
+  const outline = document.createElementNS(svgNS,'path');
+  outline.setAttribute('d', mapData.outline);
+  outline.setAttribute('fill', cssVar('--surface'));
+  outline.setAttribute('stroke', cssVar('--line'));
+  outline.setAttribute('stroke-width','1');
+  svg.appendChild(outline);
+
+  const polys = [];
+  mapData.blocks.forEach(b => {
+    const p = document.createElementNS(svgNS,'path');
+    p.setAttribute('d', b.path);
+    p.setAttribute('class','block-poly');
+    p.dataset.label = b.label;
+    svg.appendChild(p);
+    polys.push(p);
+
+    p.addEventListener('mouseenter', (e)=> { if (!pinnedLabel) showTooltip(e, b); });
+    p.addEventListener('mousemove', (e)=> { if (!pinnedLabel) moveTooltip(e); });
+    p.addEventListener('mouseleave', ()=> { if (!pinnedLabel) hideTooltip(); });
+    p.addEventListener('click', (e)=> {
+      e.stopPropagation();
+      if (b.status === 'done2025') {
+        pinTooltip(e, b);
+      } else {
+        if (pinnedLabel) unpinTooltip();
+        selectBlock(b.label);
+      }
+    });
+
+    const hash = document.createElementNS(svgNS,'path');
+    hash.setAttribute('d', b.path);
+    hash.setAttribute('fill', `url(#${b.lot===1?'mx':'hex'}-hash)`);
+    hash.setAttribute('class','block-hash');
+    hash.style.pointerEvents = 'none';
+    hash.style.display = 'none';
+    svg.appendChild(hash);
+    hashOverlays[b.label] = hash;
+  });
+
+  containerEl.innerHTML = '';
+  containerEl.appendChild(svg);
+  return polys;
+}
+
+function updateMapColors(){
+  document.querySelectorAll('.block-poly').forEach(p=>{
+    const label = p.dataset.label;
+    const b = blockIndex[label];
+    const frac = liveFraction(b, mult);
+    p.setAttribute('fill', blockBaseFill(b, frac));
+    let cls = 'block-poly ' + b.status;
+    if (!b.confirmed) cls += ' est';
+    if (label === selectedLabel) cls += ' selected';
+    p.setAttribute('class', cls);
+    p.style.opacity = b.confirmed ? 1 : 0.85;
+
+    const hash = hashOverlays[label];
+    if (!hash) return;
+    const isPartial = (b.status === 'partial2026' || b.status === 'estimated_partial');
+    hash.style.display = isPartial ? '' : 'none';
+    hash.style.opacity = b.confirmed ? 1 : 0.55;
+  });
+}
+
+const tooltipEl = document.getElementById('tooltip');
+function showTooltip(e,b){
+  const frac = liveFraction(b, mult);
+  let statusText = statusLabel(b.status);
+  const flightLine = (b.status === 'done2025')
+    ? `Sta&eth;fest loki&eth 2025 (grunn&thorn;ekja)${b.flownKm2026>0 ? ` &middot; auk &thorn;ess ${b.flownKm2026.toLocaleString('is-IS')} km flogi&eth 2026` : ''}`
+    : `Flogi&eth 2026: ${b.flownKm2026.toLocaleString('is-IS')} km sl&oacute;&eth`;
+  tooltipEl.innerHTML = `<b>${b.label}</b> &middot; ${b.region}<br>
+    <span class="tt-status">${b.lot===1?'Meixner':'Hexagon'} &middot; ${fmtKm2(b.area_km2)} km&sup2; &middot; GSD ${b.gsd}cm</span><br>
+    ${statusText} &middot; <b>${fmtPct(frac)}</b><br>
+    <span class="tt-status">${flightLine}</span>
+    ${b.note ? `<div class="tt-note">${b.note}</div>` : ''}
+    ${b.status === 'done2025' ? (
+      pinnedLabel === b.label
+        ? `<a class="tt-link" href="${HD2025_IMAGERY_URL}" target="_blank" rel="noopener">Sko&eth;a myndir &rarr;</a>`
+        : `<div class="tt-hint">Smelltu til a&eth festa og sko&eth;a myndir</div>`
+    ) : ''}`;
+  tooltipEl.classList.add('show');
+  moveTooltip(e);
+  document.querySelectorAll(`.block-poly[data-label="${b.label}"]`).forEach(el=>el.classList.add('hovered'));
+}
+function moveTooltip(e){
+  if (pinnedLabel) return; // pinned tooltip stays put so the cursor can reach its link
+  const x = e.clientX, y = e.clientY;
+  const w = tooltipEl.offsetWidth || 200, h = tooltipEl.offsetHeight || 60;
+  let left = x + 16, top = y + 16;
+  if (left + w > window.innerWidth - 8) left = x - w - 16;
+  if (top + h > window.innerHeight - 8) top = y - h - 16;
+  tooltipEl.style.left = left + 'px';
+  tooltipEl.style.top = top + 'px';
+}
+function hideTooltip(){
+  tooltipEl.classList.remove('show');
+  document.querySelectorAll('.block-poly.hovered').forEach(el=>el.classList.remove('hovered'));
+}
+function pinTooltip(e, b){
+  pinnedLabel = b.label;
+  showTooltip(e, b);
+  tooltipEl.classList.add('pinned');
+}
+function unpinTooltip(){
+  if (!pinnedLabel) return;
+  pinnedLabel = null;
+  tooltipEl.classList.remove('pinned');
+  hideTooltip();
+}
+document.addEventListener('click', (e)=>{
+  if (pinnedLabel && !tooltipEl.contains(e.target)) unpinTooltip();
+});
+document.addEventListener('keydown', (e)=>{
+  if (e.key === 'Escape' && pinnedLabel) unpinTooltip();
+});
+
+function selectBlock(label){
+  selectedLabel = (selectedLabel === label) ? null : label;
+  updateMapColors();
+  renderTable();
+  if (selectedLabel){
+    const row = document.querySelector(`tr[data-label="${selectedLabel}"]`);
+    if (row) row.scrollIntoView({block:'nearest', behavior:'smooth'});
+  }
+}
+
+// ---------- build flat block index ----------
+const blockIndex = {};
+const allBlocks = DATA.combined.blocks;
+allBlocks.forEach(b => blockIndex[b.label] = b);
+
+// ---------- aggregate KPIs ----------
+function computeAgg(){
+  function lotAgg(blocks){
+    const total = blocks.reduce((s,b)=>s+b.area_km2,0);
+    const confirmed = blocks.reduce((s,b)=> s + b.area_km2*liveFraction(b,mult), 0);
+    // Light "could be more than this" band: the gap between the confirmed
+    // credit and the optimistic raw-geometry estimate, for every block
+    // (including ones with no human confirmation yet). Never added to the
+    // headline percentage — only shown as a lighter shade on the bar.
+    const potential = blocks.reduce((s,b)=> {
+      const lo = liveFraction(b,mult);
+      const hi = Math.max(lo, potentialFraction(b));
+      return s + b.area_km2*(hi-lo);
+    }, 0);
+    return {total, confirmed, estimated: potential};
+  }
+  const m = lotAgg(allBlocks.filter(b=>b.lot===1));
+  const h = lotAgg(allBlocks.filter(b=>b.lot===2));
+  const t = {total: m.total+h.total, confirmed: m.confirmed+h.confirmed, estimated: m.estimated+h.estimated};
+  return {m,h,t};
+}
+
+function renderKPIs(){
+  const {m,h,t} = computeAgg();
+
+  function fill(prefix, agg, label){
+    const confPct = agg.confirmed/agg.total;
+    const estPct = agg.estimated/agg.total;
+    // Headline number is confirmed-only — the light band never inflates it.
+    document.getElementById(prefix+'Pct').textContent = fmtPct(confPct);
+    document.getElementById(prefix+'BarConfirmed').style.width = (confPct*100)+'%';
+    document.getElementById(prefix+'BarEstimate').style.width = (estPct*100)+'%';
+    const sub = document.getElementById(prefix+'Sub');
+    if (sub) sub.innerHTML = `<b>${fmtKm2(agg.confirmed)}</b> km&sup2; sta&eth;fest &mdash; upp a&eth <b>${fmtKm2(agg.confirmed+agg.estimated)}</b> km&sup2; hugsanlega n&uacute; &thorn;egar flogi&eth (&oacute;sta&eth;fest) af <b>${fmtKm2(agg.total)}</b> km&sup2;`;
+  }
+  fill('total', t);
+  fill('meixner', m);
+  fill('hexagon', h);
+  document.getElementById('meixnerMapPct').textContent = fmtPct(m.confirmed/m.total);
+  document.getElementById('hexagonMapPct').textContent = fmtPct(h.confirmed/h.total);
+}
+
+// ---------- table ----------
+let sortKey = 'label', sortDir = 1;
+function filteredBlocks(){
+  const q = document.getElementById('searchBox').value.trim().toLowerCase();
+  const lotF = document.getElementById('lotFilter').value;
+  const stF = document.getElementById('statusFilter').value;
+  return allBlocks.filter(b=>{
+    if (q && !b.label.toLowerCase().includes(q) && !b.region.toLowerCase().includes(q)) return false;
+    if (lotF !== 'all' && String(b.lot) !== lotF) return false;
+    if (stF !== 'all' && statusGroup(b.status) !== stF) return false;
+    return true;
+  });
+}
+function renderTable(){
+  const body = document.getElementById('blockTableBody');
+  let rows = filteredBlocks();
+  rows.sort((a,b)=>{
+    let av, bv;
+    if (sortKey === 'fraction'){ av = liveFraction(a,mult); bv = liveFraction(b,mult); }
+    else if (sortKey === 'status'){ av = statusLabel(a.status); bv = statusLabel(b.status); }
+    else { av = a[sortKey]; bv = b[sortKey]; }
+    if (typeof av === 'string') return sortDir*av.localeCompare(bv, 'is');
+    return sortDir*(av-bv);
+  });
+  body.innerHTML = rows.map(b=>{
+    const frac = liveFraction(b, mult);
+    return `<tr data-label="${b.label}" class="${b.label===selectedLabel?'selected':''}">
+      <td class="mono">${b.label}</td>
+      <td>${b.lot===1?'Meixner':'Hexagon'}</td>
+      <td class="mono">${fmtKm2(b.area_km2)}</td>
+      <td class="mono">${b.gsd} cm</td>
+      <td class="mono">${fmtPct(frac)}</td>
+      <td><span class="chip ${b.status}">${statusLabel(b.status)}</span></td>
+    </tr>`;
+  }).join('');
+  body.querySelectorAll('tr').forEach(tr=> tr.addEventListener('click', ()=> selectBlock(tr.dataset.label)));
+}
+
+document.querySelectorAll('#blockTable thead th').forEach(th=>{
+  th.addEventListener('click', ()=>{
+    const key = th.dataset.key;
+    if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = 1; }
+    renderTable();
+  });
+});
+document.getElementById('searchBox').addEventListener('input', renderTable);
+document.getElementById('lotFilter').addEventListener('change', renderTable);
+document.getElementById('statusFilter').addEventListener('change', renderTable);
+
+function refreshAll(){
+  updateMapColors();
+  renderKPIs();
+  renderTable();
+}
+
+// ---------- init ----------
+renderMap(document.getElementById('combinedMapWrap'), DATA.combined);
+refreshAll();
+</script>
