@@ -239,23 +239,6 @@ tbody tr.selected{ background:var(--hexagon-soft); }
 .chip.not_started{ background:var(--surface-2); color:var(--ink-faint); border:1px solid var(--line); }
 .chip.unconfirmed{ border-style:dashed; }
 
-/* ---------- yearly area / storage section ---------- */
-.hero.year-hero{ grid-template-columns:1fr 1fr 1fr; }
-.tile.year-tile.y2025{ border-top-color:var(--hexagon-deep); }
-.tile.year-tile.y2026{ border-top-color:var(--focus); }
-.tile.year-tile.yremaining{ border-top-color:var(--warn); }
-.storage-table-wrap{ overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--surface); box-shadow:var(--shadow); }
-table.storage-table{ border-collapse:collapse; width:100%; font-size:13px; min-width:560px; }
-table.storage-table thead th{
-  text-align:left; font-family:'Manrope',sans-serif; font-weight:700; font-size:11px; letter-spacing:.04em;
-  text-transform:uppercase; color:var(--ink-soft); padding:10px 14px; border-bottom:1px solid var(--line);
-  background:var(--surface-2);
-}
-table.storage-table tbody td{ padding:9px 14px; border-bottom:1px solid var(--line-soft); font-variant-numeric:tabular-nums; }
-table.storage-table tbody tr:last-child td{ border-bottom:none; }
-table.storage-table tbody tr.total{ font-weight:700; background:var(--surface-2); }
-table.storage-table .src-note{ color:var(--ink-faint); font-size:12px; font-style:italic; font-weight:400; }
-
 /* ---------- methodology ---------- */
 .method{
   background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:16px 20px;
@@ -381,45 +364,6 @@ footer .prepared{ font-family:'JetBrains Mono',monospace; font-size:11.5px; colo
     </div>
   </section>
 
-  <section class="yearly-storage">
-    <div class="section-head">
-      <h2>Flatarm&aacute;l eftir &aacute;ri &amp; &aacute;&aelig;tlu&eth; gagnageymsla</h2>
-      <span class="section-note">&aacute;&aelig;tla&eth &uacute;t fr&aacute; n&uacute;verandi framvindu og raunverulegri geymslu&thorn;&ouml;rf 2025</span>
-    </div>
-
-    <div class="hero year-hero">
-      <div class="tile year-tile y2025">
-        <div class="tile-label">Kortlagt 2025</div>
-        <div class="tile-figure"><span id="area2025">&mdash;</span></div>
-        <div class="tile-sub" id="area2025Sub">&nbsp;</div>
-      </div>
-      <div class="tile year-tile y2026">
-        <div class="tile-label">Kortlagt 2026 (til &thorn;essa)</div>
-        <div class="tile-figure"><span id="area2026">&mdash;</span></div>
-        <div class="tile-sub" id="area2026Sub">&nbsp;</div>
-      </div>
-      <div class="tile year-tile yremaining">
-        <div class="tile-label">Eftir er fyrir 2027&ndash;2028</div>
-        <div class="tile-figure"><span id="areaRemaining">&mdash;</span></div>
-        <div class="tile-sub" id="areaRemainingSub">&nbsp;</div>
-      </div>
-    </div>
-
-    <div class="storage-table-wrap">
-      <table class="storage-table">
-        <thead>
-          <tr><th>T&iacute;mabil</th><th>Flatarm&aacute;l</th><th>Gagnamagn</th><th>Heimild</th></tr>
-        </thead>
-        <tbody id="storageTableBody"></tbody>
-      </table>
-    </div>
-
-    <div class="disclaimer">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.3 15 13.7H1L8 1.3Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6.2v3.6M8 11.7v.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-      <div><b>Um &aacute;&aelig;tlunina:</b> geymsluhlutfalli&eth; (TB/km&sup2;) er reikna&eth; beint &uacute;t fr&aacute; raunverulegu magni gagna sem Hexagon skila&eth;i fyrir 2025-grunn&thorn;ekjuna (33 TB / 17.211,0 km&sup2;) og er svo margfalda&eth; me&eth; kortl&ouml;g&eth;u flatarm&aacute;li hvers t&iacute;mabils. &THORN;etta gerir r&aacute;&eth; fyrir svipa&eth;ri gagna&thorn;&eacute;ttni og &aacute;ri&eth; 2025 (allt &iacute; 25 cm upplausn) &mdash; reitirnir RVK og KEF (samtals 694 km&sup2;) eru flognir &iacute; 10 cm upplausn og skila l&iacute;klega hlutfallslega meira gagnamagni en 25 cm &thorn;ekjan sem grunntalan byggir &aacute;, svo heildart&ouml;lurnar geta veri&eth; vanmetnar um nokkur pr&oacute;sent. &THORN;etta er groff&aacute;&aelig;tlun til a&eth; undirb&uacute;a geymslu&thorn;&ouml;rf &mdash; ekki loka gagnamagn.</div>
-    </div>
-  </section>
-
   <div class="method">
     <h3>A&eth;fer&eth</h3>
     <div>Loki&eth 2025 (Hexagon, 10 reitir) er sta&eth;fest &uacute;r sk&yacute;rslu verktaka fr&aacute; fyrra &aacute;ri &mdash; s&yacute;nt sem d&ouml;kkfj&oacute;lubl&aacute;tt. Sta&eth;a 21 reits fyrir 2026 (9 loki&eth;r, 12 a&eth hluta &mdash; s&yacute;nt me&eth sk&aacute;strikum) er sta&eth;fest handvirkt, myndg&aelig;&eth;i og sk&yacute;jahula teki&eth me&eth &iacute; reikninginn. Hlutfall &thorn;essara 12 "a&eth hluta" reita er &aacute;ætla&eth me&eth &thorn;v&iacute; a&eth belgja flugsl&oacute;&eth 2026 (22.754 brot &uacute;r flight_tracks_merged_2026.gpkg, au&eth;ga&eth me&eth Reykjanessl&oacute;&eth Meixner fr&aacute; 1. sept.) um sviflengd kv&ouml;r&eth;u&eth fyrir hvorn upplausnarflokk (10 cm &rarr; ~650 m, 25 cm &rarr; ~2.600 m), reiknu&eth &aacute; &iacute;haldssamasta gildi (0,5&times; kv&ouml;r&eth;u&eth sviflengd) svo hlutf&ouml;llin eru frekar van- en of&aacute;&aelig;tlu&eth. Allir a&eth rir 29 reitir eru taldir &oacute;flognir (0%) &iacute; &thorn;essari sk&yacute;rslu, jafnvel &thorn;&oacute;tt stakar flugsl&oacute;&eth;ir liggi inn &iacute; &thorn;&aacute; &mdash; sl&iacute;kt er yfirleitt "bleed-over" fr&aacute; a&eth liggjandi reitum (t.d. beygjur e&eth;a fluglei&eth;ir milli sv&aelig;&eth;a) og telst ekki sem kortlagning fyrr en verktaki sta&eth;festir reitinn.</div>
@@ -442,9 +386,6 @@ function fmtKm2(x){
 }
 function fmtPct(x){
   return (x*100).toLocaleString('is-IS', {maximumFractionDigits:1, minimumFractionDigits:1}) + '%';
-}
-function fmtTB(x){
-  return x.toLocaleString('is-IS', {maximumFractionDigits:1, minimumFractionDigits:1}) + ' TB';
 }
 
 function defaultWidth(gsd){ return DATA.defaultWidths[String(gsd)]; }
@@ -782,59 +723,10 @@ document.getElementById('searchBox').addEventListener('input', renderTable);
 document.getElementById('lotFilter').addEventListener('change', renderTable);
 document.getElementById('statusFilter').addEventListener('change', renderTable);
 
-// ---------- yearly area & storage extrapolation ----------
-// Storage rate is derived directly from what Hexagon actually delivered for
-// the 2025 baseline (raw images + orthos + all related data products), then
-// applied to the area mapped in other periods. See the disclaimer text below
-// the table for the caveats (resolution mix, etc).
-const STORAGE_2025_TB = 33;
-
-function computeYearlyStorage(){
-  const area2025 = allBlocks.filter(b => b.status === 'done2025')
-    .reduce((s,b)=> s + b.area_km2, 0);
-  const area2026 = allBlocks.filter(b => b.status !== 'done2025')
-    .reduce((s,b)=> s + b.area_km2 * liveFraction(b, mult), 0);
-  const totalArea = allBlocks.reduce((s,b)=> s + b.area_km2, 0);
-  const remainingArea = Math.max(0, totalArea - area2025 - area2026);
-  const ratePerKm2 = STORAGE_2025_TB / area2025;
-  return {
-    area2025, area2026, totalArea, remainingArea, ratePerKm2,
-    storage2026: ratePerKm2 * area2026,
-    storageRemaining: ratePerKm2 * remainingArea,
-    storageTotal: ratePerKm2 * totalArea,
-  };
-}
-
-function renderYearlyStorage(){
-  const s = computeYearlyStorage();
-
-  document.getElementById('area2025').textContent = fmtKm2(s.area2025) + ' km\u00b2';
-  document.getElementById('area2025Sub').innerHTML = '10 reitir &middot; Hexagon grunn&thorn;ekja';
-  document.getElementById('area2026').textContent = fmtKm2(s.area2026) + ' km\u00b2';
-  document.getElementById('area2026Sub').innerHTML = 'sta&eth;fest og &oacute;sta&eth;fest, b&aacute;&eth;ir &uacute;tbo&eth;shlutar';
-  document.getElementById('areaRemaining').textContent = fmtKm2(s.remainingArea) + ' km\u00b2';
-  document.getElementById('areaRemainingSub').innerHTML = fmtPct(s.remainingArea / s.totalArea) + ' af heildarverkefninu';
-
-  const rows = [
-    {label: '2025 &mdash; grunn&thorn;ekja Hexagon', area: s.area2025, storage: STORAGE_2025_TB, note: 'Rauntala fr&aacute; verktaka', cls: ''},
-    {label: '2026 &mdash; til &thorn;essa', area: s.area2026, storage: s.storage2026, note: '&Aacute;&aelig;tla&eth &uacute;t fr&aacute; hlutfalli 2025', cls: ''},
-    {label: '2027&ndash;2028 &mdash; &thorn;a&eth; sem eftir er', area: s.remainingArea, storage: s.storageRemaining, note: '&Aacute;&aelig;tla&eth', cls: ''},
-    {label: 'Verkefni&eth; &iacute; heild (2025&ndash;2028)', area: s.totalArea, storage: s.storageTotal, note: '&Aacute;&aelig;tla&eth', cls: 'total'},
-  ];
-  document.getElementById('storageTableBody').innerHTML = rows.map(r => `
-    <tr class="${r.cls}">
-      <td>${r.label}</td>
-      <td class="mono">${fmtKm2(r.area)} km&sup2;</td>
-      <td class="mono">${fmtTB(r.storage)}</td>
-      <td class="src-note">${r.note}</td>
-    </tr>`).join('');
-}
-
 function refreshAll(){
   updateMapColors();
   renderKPIs();
   renderTable();
-  renderYearlyStorage();
 }
 
 // ---------- init ----------
