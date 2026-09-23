@@ -9,13 +9,12 @@ HD_RAW = {'NE81_39','HI80_31','NE86_39','SE79_16','SE92_31','SE92_35','SE92_25',
 HD_EXCLUDE = set()  # previously excluded HI80_31/NE80_35/NE81_39 as "not yet flown"; user corrected — they were flown in 2025 after all
 HD = HD_RAW - HD_EXCLUDE
 DONE_2026 = {'RVK','KEF','SW56_15','SW52_23','HI74_27','HI74_23','NE75_35','NE80_43','HI68_19','SW62_19','SW57_23','NW47_40','NW51_44','NW51_40','SW45_27','SW51_27','SW57_27','NW49_31','SW55_19','HI74_19'}
-PARTIAL_2026 = {'SW51_17','SE74_15','NW67_37','NE74_39','NW44_35','SE79_20','NW50_35'}
-CLOUDS = {'SW51_17'}
+PARTIAL_2026 = {'SE74_15','NW67_37','NE74_39','NW44_35','SE79_20','NW50_35'}
+CLOUDS = set()
 # Ground-truth fractions from actual collected-image counts (more accurate than
 # the flight-line swath-buffer model) — these override the geometric estimate
 # entirely and are not subject to the pessimistic-multiplier adjustment.
 IMAGE_COUNT_FRACTIONS = {
-    'SW51_17': 0.50,
     'NE74_39': 0.197,
     'SE74_15': 0.40,
     'NW67_37': 0.20,
@@ -29,9 +28,9 @@ IMAGE_COUNT_FRACTIONS = {
 # the dashboard instead of "(staðfest)"/plain "Lokið". Does not affect the
 # displayed fraction, only the confirmed flag.
 UNCONFIRMED = {
-    'SW51_17', 'SW51_27', 'SW57_27', 'SE74_15',
-    'NW67_37', 'NE74_39', 'NW44_35', 'SW55_19',
-    'SW57_23', 'NW49_31', 'NW50_35',
+    'SW51_27', 'SW57_27', 'SE74_15',
+    'NW67_37', 'NE74_39', 'SW55_19',
+    'SW57_23', 'NW49_31',
 }
 
 def default_w(gsd): return 650 if gsd == 10 else 2600
@@ -121,7 +120,7 @@ shared_bbox = (
     max(g.bounds[2] for g in all_geoms), max(g.bounds[3] for g in all_geoms),
 )
 data = {
-    "generated": "2026-09-08",
+    "generated": "2026-09-23",
     "defaultWidths": {"10": 650, "25": 2600},
     "combined": project_lot(blocks, shared_bbox, vb_w=1000.0),
 }
