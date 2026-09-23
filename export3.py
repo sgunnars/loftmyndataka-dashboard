@@ -18,9 +18,9 @@ IMAGE_COUNT_FRACTIONS = {
     'NE74_39': 0.197,
     'SE74_15': 0.40,
     'NW67_37': 0.20,
-    'NW44_35': 0.50,
+    'NW44_35': 0.467,
     'SE79_20': 0.75,
-    'NW50_35': 0.45,
+    'NW50_35': 0.527,
 }
 
 # Blocks whose percentage is real (not to be zeroed out) but has NOT yet been
